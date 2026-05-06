@@ -1,0 +1,114 @@
+Practical No: 9
+
+Objective: To understand and practice the process of taking a backup of a MySQL database 
+to ensure data security and disaster recovery using Ubuntu.
+
+Step 4: Login to MySQL sudo 
+mysql -u root -p
+
+Step 5: Create Sample Database 
+CREATE DATABASE college_db; 
+
+USE college_db; 
+
+CREATE TABLE students (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50), course 
+VARCHAR(50)); 
+
+INSERT INTO students(name, course) VALUES 
+('Rahul','BCA'),('Sneha','Bsc'),('Amit','Btech');
+
+Step 6: Take Backup mysqldump -u root -p college_db 
+> college_backup.sql ( new terminal )
+
+Step 7: Delete Database for Testing 
+DROP DATABASE college_db;
+
+Step 8: Recreate Database 
+CREATE DATABASE college_db;
+
+Step 9: Restore Backup 
+mysql -u root -p college_db < college_backup.sql 
+
+Step 10: Verify Data 
+USE college_db; SELECT * 
+FROM students;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
