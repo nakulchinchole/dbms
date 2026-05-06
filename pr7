@@ -1,0 +1,108 @@
+Practical no 7
+
+
+Problem Statement:  
+Perform operations using MongoDB for NoSQL data storage.  
+Design and implement:  
+• Create a MongoDB collection for user data   
+• Perform CRUD (Create, Read, Update, Delete) operations   
+• Write aggregation queries to calculate statistics (total sales, average age)   
+• Create indexes and observe performance improves Objectives: Work with MongoDB for 
+NoSQL data storage.   
+Use MongoDB aggregation and indexing for data analysis  
+
+
+
+Tasks:   
+• Create a MongoDB collection for user data.   
+• Perform CRUD (Create, Read, Update, Delete) operations on the collection.   
+• Write aggregation queries to calculate statistics (e.g., total sales, average age).   
+• Create indexes and observe performance improvements.  
+
+
+1. mongosh  
+
+
+2. Show dbs;
+
+3. use userdb;  
+
+
+4. Show Collections;  
+
+
+5. db.user.insertOne([ { name: "ABC", age: 25, city: "pune", totalsales: 500 }])  
+
+
+6. db.user.insertMany([ { name: "PQR", age: 30, city: "Mumbai", totalsales: 7000 },{ name: "xyz", age: 
+28, city: "Pune", totalsales: 6500 }]);  
+
+
+7. db.user.find(); 
+
+
+
+8. db.user.find({ city: "Pune"}) ;  
+
+
+
+
+9. db.user.find().limit(3);  
+
+
+
+
+10. db.user.find({ age: {$gt:25 }});   
+
+
+
+
+11. db.user.updateOne({name:"PQR"},{$set: { toatlsales:9000}});  
+
+
+
+12. db.user.findOne({name:"PQR"});  
+
+
+
+
+13. db.user.updateOne({name:"PQR"},{$set: { email:"Pqp@gmail.com"}});  
+
+
+
+
+14. db.user.findOne({name:"PQR"}); 
+
+
+
+
+
+15. db.user.updateMany({age: {$gt:25} },{$set: {city:"landon"}});  
+
+
+
+ 
+16. db.user.find(); 
+
+
+
+17. db.user.deleteOne({name:"PQR"});  
+
+
+
+
+• Aggregation queries to calculation   
+1. db.user.aggregate([{$group: {_id:null, avg_age: {$avg: "$age"}}}]); 
+
+2. db.user.aggregate([{$group: {_id:null, avg_totalsales: {$avg: "$totalsales"}}}]);  
+
+3. db.user.aggregate([{$group: {_id:"$city",totalsales:{ $sum: "$totalsales"}}}]);   
+
+• Create Index   
+1. db.user.createIndex({city:1});   
+
+2. db.user.createIndex({name:1});   
+
+3. db.user.getIndexes();   
+
+4. db.user.find({ city:"pune" }).explain("executionStats");
