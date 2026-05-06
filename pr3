@@ -7,115 +7,112 @@ count, and sorted course lists, advanced SQL querying techniques are required. T
 include filters, sorting operations, aggregation functions, and nested queries to extract specific 
 information efficiently.
 
-Step 1: Create the Required Tables 
-CREATE TABLE Students ( 
-student_id INT PRIMARY KEY, 
-name VARCHAR(50), 
-age INT, 
-course_id INT 
-); 
-CREATE TABLE Courses ( 
-course_id INT PRIMARY KEY, 
-course_name VARCHAR(50), 
-credits INT, 
-instructor VARCHAR(50) 
-); 
+-- STEP 1: Create & Use Database
+CREATE DATABASE IF NOT EXISTS UniversityDB;
+USE UniversityDB;
 
+-- STEP 2: Clean Tables
+DROP TABLE IF EXISTS Students;
+DROP TABLE IF EXISTS Courses;
 
-Step 2: Insert Sample Data
-INSERT INTO Courses VALUES 
-(1, ‘Database Systems’, 4, ‘Dr. Sharma’), 
-(2, ‘Data Science’, 3, ‘Dr. Mehta’), 
-(3, ‘Computer Networks’, 4, ‘Dr. Sharma’);
-INSERT INTO Students VALUES 
-(101, ‘Amit’ 20, 1), 
-(102, ‘Priya’, 22, 2), 
-(103, ‘Rahul’, 19, 1), 
-(104, ‘Sneha’, 21, 3), 
-(105, ‘Kiran’, 23, 2);
+-- STEP 3: Create Tables
+CREATE TABLE Courses (
+course_id INT PRIMARY KEY,
+course_name VARCHAR(50),
+credits INT,
+instructor VARCHAR(50)
+);
 
-PART 1: Filtering Data Using WHERE 
-Example 1: Find students above age 21 
-SELECT * 
-FROM Students 
-WHERE age > 21; 
+CREATE TABLE Students (
+student_id INT PRIMARY KEY,
+name VARCHAR(50),
+age INT,
+course_id INT,
+FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+);
 
-Example 2: Find courses taught by Dr. Sharma 
-SELECT * 
-FROM Courses
-WHERE instructor =’Dr. Sharma’;
+-- STEP 4: Insert Data
+INSERT INTO Courses VALUES
+(1, 'Database Systems', 4, 'Dr. Sharma'),
+(2, 'Data Science', 3, 'Dr. Mehta'),
+(3, 'Computer Networks', 4, 'Dr. Sharma');
+INSERT INTO Students VALUES
+(101, 'Amit', 20, 1),
+(102, 'Priya', 22, 2),
+(103, 'Rahul', 19, 1),
+(104, 'Sneha', 21, 3),
+(105, 'Kiran', 23, 2);
 
+-- STEP 5: Verify Data
+SELECT * FROM Students;
+SELECT * FROM Courses;
 
-Example 3: Find students enrolled in Data Science 
-SELECT s.name, c.course_name 
-FROM Students s 
-JOIN Courses c ON s.course_id = c.course_id 
-WHERE c.course_name = ‘Data Science’;
+-- =========================
+-- PART 1: WHERE (Filtering)
+-- =========================
 
+SELECT * FROM Students WHERE age > 21;
 
+SELECT * FROM Courses WHERE instructor = 'Dr. Sharma';
 
-PART 2: Sorting Using ORDER BY 
-Example 1: Sort students alphabetically 
-SELECT * 
-FROM Students 
-ORDER BY name ASC;
-
-
-Example 2: Sort courses bhighy credits (est first) 
-SELECT * 
-FROM Courses 
-ORDER BY credits DESC;
-
-PART 3: Aggregation Using GROUP BY 
-Example 1: Count number of students per course 
-SELECT c.course_name, COUNT(s.student_id) AS student_count 
+SELECT s.name, c.course_name
 FROM Students s
+JOIN Courses c ON s.course_id = c.course_id
+WHERE c.course_name = 'Data Science';
 
-JOIN Courses c ON s.course_id = c.course_id 
-GROUP BY c.course_name; 
+-- =========================
+-- PART 2: ORDER BY (Sorting)
+-- =========================
 
-Example 2: Find average age of students 
-SELECT AVG(age) AS average_age 
-FROM Students;
+SELECT * FROM Students ORDER BY name ASC;
 
-Example 3: Average age per course 
-SELECT c.course_name, AVG(s.age) AS avg_age 
-FROM Students s 
-JOIN Courses c ON s.course_id = c.course_id 
+SELECT * FROM Courses ORDER BY credits DESC;
+
+-- =========================
+-- PART 3: GROUP BY
+-- =========================
+
+SELECT c.course_name, COUNT(s.student_id) AS student_count
+FROM Students s
+JOIN Courses c ON s.course_id = c.course_id
 GROUP BY c.course_name;
 
-PART 4: Nested Subqueries (Advanced Queries) 
-Example 1: Find students enrolled in course with highest credits 
-SELECT name 
-FROM Students 
-WHERE course_id = ( 
-SELECT course_id 
-FROM Courses 
-ORDER BY credits DESC 
-LIMIT 1 
-);  
+SELECT AVG(age) AS average_age FROM Students;
 
+SELECT c.course_name, AVG(s.age) AS avg_age
+FROM Students s
+JOIN Courses c ON s.course_id = c.course_id
+GROUP BY c.course_name;
 
-Example 2: Find students older than average age 
-SELECT name, age 
-FROM Students 
-WHERE age &gt; ( 
-SELECT AVG(age) 
-FROM Students 
+-- =========================
+-- PART 4: SUBQUERIES
+-- =========================
+
+SELECT name
+FROM Students
+WHERE course_id = (
+SELECT course_id
+FROM Courses
+ORDER BY credits DESC
+LIMIT 1
 );
 
-
-Example 3: Find course having maximum number of students 
-SELECT course_name 
-FROM Courses 
-WHERE course_id = ( 
-SELECT course_id 
-FROM Students 
-GROUP BY course_id 
-ORDER BY COUNT(student_id) DESC 
-LIMIT 1 
+SELECT name, age
+FROM Students
+WHERE age > (
+SELECT AVG(age)
+FROM Students
 );
 
+SELECT course_name
+FROM Courses
+WHERE course_id = (
+SELECT course_id
+FROM Students
+GROUP BY course_id
+ORDER BY COUNT(student_id) DESC
+LIMIT 1
+);
 
 
 
