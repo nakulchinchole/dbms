@@ -1,0 +1,99 @@
+Practical no 8
+
+
+Problem Statement : Social media platforms generate massive amounts of unstructured 
+and semi-structured data such as posts, comments, hashtags, and user interactions. 
+Traditional relational databases struggle to efficiently store and process such dynamic 
+and high-volume data. Therefore, there is a need for a scalable and flelxible database 
+system to handle and analyze social media data effectivelyWrite queries to filter and 
+analyze data (e.g., find top trending hashtags) 
+
+
+Step 1: Start MongoDB and Open mongosh  
+Querry: mongosh 
+
+
+Step 2: Create Database and Collection  
+Querry: use socialMediaDB
+
+
+Step 3: Insert Manually (Inside mongosh)  
+Code: db.posts.insertMany([  
+{  
+user: "john",  
+content: "Loving AI and ML! #AI #ML #Tech", 
+hashtags: ["AI", 
+
+
+
+
+"ML", "Tech"], likes: 120, 
+date: "2026-04-10"  
+}, {  
+user: "sara",  
+content: "Big Data is the future #BigData #AI", hashtags:  
+["BigData", "AI"], 
+likes: 95, date: "2026
+04-11" }, { user: 
+"alex",  
+content: "Cloud computing rocks! #Cloud #Tech",  
+hashtags: ["Cloud", "Tech"], likes: 150, date:  
+"2026-04-12"  
+}  
+
+
+
+
+
+
+Step 4: View Data  
+Querry: db.posts.find().pretty()  
+
+
+Step 5: Basic Queries (Filtering Data) db.posts.find({ 
+likes: { $gt: 100 } }) 
+
+
+Find posts containing hashtag "AI" db.posts.find({ 
+hashtags: "AI" }) 
+
+
+
+Find posts by specific user db.posts.find({ user: 
+"john" }) 
+
+
+
+Step 6: Data Analysis (Trending Hashtags) 
+db.posts.aggregate([ { $unwind:  
+"$hashtags" },  
+{ $group: { _id: "$hashtags", count: { $sum: 1 } } },  
+{ $sort: { count: -1 } },  
+{ $limit: 5 }  
+]) 
+
+
+
+
+Step 7: Most Liked Posts db.posts.find().sort({ likes: -1 }).limit(3 )
+
+
+Step 8: Average Likes per Post db.posts.aggregate([  
+{  
+$group: { _id: null, avgLikes:  
+{ $avg: "$likes" }  
+}}  
+]) 
+
+
+
+Step 9: Advanced Query (Hashtag + Likes) db.posts.find({  
+hashtags: "AI", likes:  
+{ $gt: 100 }  
+})  
+
+
+
+Step 10: Export Result (Optional)  
+mongoexport --db socialMediaDB --collection posts --out output.json 
+])
