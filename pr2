@@ -1,1 +1,130 @@
+Practical no: 2
+
+Problem Statement  
+A Student Course Management System contains multiple tables such as Students, Courses, 
+and Enrollments. Retrieving detailed student and course information often requires 
+complex joins, which can slow down queries.  
+
+STEP 1: Create Base Tables CREATE 
+TABLE Students ( student_id INT 
+PRIMARY KEY, name VARCHAR(50),  
+age INT, course_id 
+INT  
+);  
+
+CREATE TABLE Courses ( course_id 
+INT PRIMARY KEY, course_name 
+VARCHAR(50),  
+credits INT, instructor 
+VARCHAR(50)  
+);  
+
+STEP 2: Insert Sample Data  
+INSERT INTO Courses VALUES  
+(1,’Database Systems’, 4, ‘Dr. Sharma’),  
+(2, ‘Data Science’, 3, ‘Dr. Mehta’),  
+(3, ‘Computer Networks’, 4, ‘Dr. Sharma’);  
+
+INSERT INTO Students VALUES  
+(101, ‘Amit’, 20, 1),  
+(102, ‘Priya’, 22, 2),  
+(103, ‘Rahul’, 19, 1),  
+(104,’Sneha’, 21, 3),  
+(105, ‘Kiran’, 23, 2); 
+
+STEP 3:Create Simple View for Students Only  
+CREATE VIEW StudentView AS  
+SELECT student_id, name, age  
+FROM Students; 
+
+STEP 4: Use View for Reporting  
+SELECT * FROM StudentCourseReport;  
+Update Record Using View  
+UPDATE StudentView  
+SET age = 24  
+WHERE student_id = 105; 
+
+Delete Record Using View  
+DELETE FROM StudentView  
+WHERE student_id = 103;  
+
+Create Index on Frequently Searched Column  
+CREATE INDEX idx_course_id  
+ON Students(course_id); 
+
+Another Example: Searching by Instructor  
+CREATE INDEX idx_instructor  
+ON Courses(instructor);  
+
+Measuring Performance  
+EXPLAIN SELECT *  
+FROM Students  
+WHERE course_id = 2; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
