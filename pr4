@@ -1,1 +1,140 @@
+practical no:4
+
+Problem Statement:  
+In a Customer Order Management System, data is stored in multiple tables such as 
+Customers and Orders. To generate useful reports such as customer orders, pending 
+orders, or customers without orders, it is necessary to combine data from these tables. 
+SQL join operations are used to retrieve this information efficiently. 
+
+
+R 4: Multi-Table Joins Customer Order Management System using SQL Joins Objective  
+To understand and implement different types of SQL Joins:  
+• INNER JOIN   
+• LEFT JOIN   
+• RIGHT JOIN   
+• FULL OUTER JOIN   
+These joins help retrieve related data from multiple tables. 
+
+
+1. Create Tables  
+We create two tables:  
+1. Customers  2. Orders   
+CREATE TABLE Customers (  
+CustomerID INT PRIMARY KEY,  
+CustomerName VARCHAR(50),  
+City VARCHAR(50)  
+);  
+
+
+CREATE TABLE Orders (  
+OrderID INT PRIMARY KEY,  
+CustomerID INT,   
+Product VARCHAR(50),  
+Amount INT  
+
+
+ 2. Insert Sample Data  
+Insert records into both tables.  
+INSERT INTO Customers VALUES  
+(1, 'Rahul', 'Pune'),  
+(2, 'Sneha', 'Mumbai'),  
+(3, 'Amit', 'Delhi'),  
+(4, 'Priya', 'Chennai'); 
+
+
+INSERT INTO Orders VALUES  
+(101, 1, 'Laptop', 60000),  
+(102, 1, 'Mouse', 500),  
+(103, 2, 'Mobile', 20000),  
+(104, 5, 'Tablet', 15000); 
+
+SELECT * FROM Customers;
+
+3. INNER JOIN Objective  
+Retrieve only customers who have placed orders.  
+SQL Query  
+SELECT Customers.CustomerID,  
+Customers.CustomerName,  
+Orders.OrderID,  
+Orders.Product,  
+Orders.Amount  
+FROM Customers  
+INNER JOIN Orders  
+ON Customers.CustomerID = Orders.CustomerID; 
+
+4. LEFT JOIN Objective  
+Retrieve all customers, including those who have not placed any orders.  
+SQL Query  
+SELECT Customers.CustomerID,  
+Customers.CustomerName,  
+Orders.OrderID,  
+Orders.Product  
+FROM Customers  
+LEFT JOIN Orders  
+ON Customers.CustomerID = Orders.CustomerID; 
+
+
+5. RIGHT JOIN Objective  
+Retrieve all orders, including orders without matching customers.  
+SQL Query  
+SELECT Customers.CustomerName,  
+Orders.OrderID,  
+Orders.Product  
+FROM Customers  
+RIGHT JOIN Orders  
+ON Customers.CustomerID = Orders.CustomerID; 
+
+6. FULL OUTER JOIN Objective  
+Retrieve all customers and all orders, even if no match exists.  
+SQL Query  
+SELECT Customers.CustomerID,  
+Customers.CustomerName,  
+Orders.OrderID,  
+Orders.Product,  
+Orders.Amount  
+FROM Customers  
+LEFT JOIN Orders  
+ON Customers.CustomerID = Orders.CustomerID  
+UNION  
+SELECT Customers.CustomerID,  
+Customers.CustomerName,  
+Orders.OrderID,  
+Orders.Product,  
+Orders.Amount  
+FROM Customers  
+RIGHT JOIN Orders  
+ON Customers.CustomerID = Orders.CustomerID;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
