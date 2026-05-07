@@ -1,29 +1,13 @@
-practical no: 6
-
-PROBLEM STATEMENT:
-Develop an Employee Management System with Triggers for Audit 
-Logging and Cursors for Efficient Data Processing 
-
-• SOLUTION: 
-• Steps for Oracle Database: 
-• In Terminal 
-• Step1: sudo service oracle-xe configure 
-• Step2: sudo service oracle-xe 
-start In Firefox 
-http://127.0.0.1:8080/apex/
-
-1. Create Tables: 
-• Employee Table 
-Querry: CREATE TABLE Employees_New ( 
+CREATE TABLE Employees_New9 ( 
 emp_id NUMBER PRIMARY KEY, 
 emp_name VARCHAR2(100), 
 department VARCHAR2(50), 
 salary NUMBER 
 ); 
 
-• Audit Table 
-Querry: 
-CREATE TABLE Employee_Audit_New ( 
+
+
+CREATE TABLE Employee_Audit_New9 ( 
 audit_id NUMBER PRIMARY KEY, 
 emp_id NUMBER, 
 action VARCHAR2(10), 
@@ -32,50 +16,54 @@ new_salary NUMBER,
 action_date DATE 
 );
 
-2. CREATE SEQUENCE: 
-Querry: 
+
+
 CREATE SEQUENCE emp_audit_seq_new 
 START WITH 1 
 INCREMENT BY 1; 
 
-3.CREATE TRIGGER:  
-QUERRY: 
+
+
 CREATE OR REPLACE TRIGGER emp_audit_trigger 
-AFTER INSERT OR UPDATE OR DELETE ON Employees_New 
+AFTER INSERT OR UPDATE OR DELETE ON Employees_New9 
 FOR EACH ROW 
 BEGIN 
 IF INSERTING THEN 
-INSERT INTO Employee_Audit_New 
+INSERT INTO Employee_Audit_New9 
 VALUES(emp_audit_seq_new.NEXTVAL, :NEW.emp_id, 'INSERT', NULL, :NEW.salary, SYSDATE); 
 ELSIF UPDATING THEN 
-INSERT INTO Employee_Audit_New 
+INSERT INTO Employee_Audit_New9 
 VALUES(emp_audit_seq_new.NEXTVAL, :NEW.emp_id, 'UPDATE', :OLD.salary, :NEW.salary, 
 SYSDATE); 
 ELSIF DELETING THEN 
-INSERT INTO Employee_Audit_New 
+INSERT INTO Employee_Audit_New9 
 VALUES(emp_audit_seq_new.NEXTVAL, :OLD.emp_id, 'DELETE', :OLD.salary, NULL, SYSDATE); 
 END IF; 
-END; 
-/
+END;
+ /
 
-5.INSERT VALUES: 
-QUERRY: 
-INSERT INTO Employees_New VALUES (1, 'Amit', 'IT', 5000); 
-INSERT INTO Employees_New VALUES (2, 'Neha', 'HR', 4000); 
-INSERT INTO Employees_New VALUES (3, 'Raj', 'IT', 6000);
 
-6.CREATE CURSOR: 
-QUERRY:DECLARE 
+
+
+ INSERT INTO Employees_New9 VALUES (1, 'Amit', 'IT', 5000); 
+INSERT INTO Employees_New9 VALUES (2, 'Neha', 'HR', 4000); 
+INSERT INTO Employees_New9 VALUES (3, 'Raj', 'IT', 6000);
+
+
+
+
+
+DECLARE 
 CURSOR emp_cursor IS  
-SELECT emp_id, salary FROM Employees_New WHERE department = 'IT'; 
-v_emp_id Employees_New.emp_id%TYPE; 
-v_salary Employees_New.salary%TYPE; 
+SELECT emp_id, salary FROM Employees_New9 WHERE department = 'IT'; 
+v_emp_id Employees_New9.emp_id%TYPE; 
+v_salary Employees_New9.salary%TYPE; 
 BEGIN 
 OPEN emp_cursor; 
 LOOP 
 FETCH emp_cursor INTO v_emp_id, v_salary; 
 EXIT WHEN emp_cursor%NOTFOUND; 
-UPDATE Employees_New 
+UPDATE Employees_New9 
 SET salary = v_salary * 1.10 
 WHERE emp_id = v_emp_id; 
 END LOOP; 
@@ -84,28 +72,7 @@ COMMIT;
 END; 
 / 
 
-SELECT * FROM Employees_New WHERE department = 'IT'; 
 
-SELECT * FROM Employee_Audit_New WHERE action = 'UPDATE'; 
+SELECT * FROM Employees_New9 WHERE department = 'IT';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+SELECT * FROM Employee_Audit_New9 WHERE action = 'UPDATE';
