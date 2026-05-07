@@ -6,6 +6,15 @@ Management System with Stored Procedures and Functions for Efficient Data Handli
 Objective: Implement stored procedures and functions 
 Task: 
 
+• SOLUTION: 
+• Steps for Oracle Database: 
+• In Terminal 
+• Step1: sudo service oracle-xe configure 
+• Step2: sudo service oracle-xe 
+start In Firefox 
+http://127.0.0.1:8080/apex/
+
+
 Step1:Create table Sales
 CREATE TABLE sales (
  sale_id NUMBER PRIMARY KEY,
