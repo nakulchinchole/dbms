@@ -6,68 +6,63 @@ Management System with Stored Procedures and Functions for Efficient Data Handli
 Objective: Implement stored procedures and functions 
 Task: 
 
-• Create a store procedure to add data to 
-a table. 
-• Create a function to calculate and 
-return total sales.
+Step1:Create table Sales
+CREATE TABLE sales (
+ sale_id NUMBER PRIMARY KEY,
+ product_name VARCHAR2(100),
+ quantity NUMBER,
+ price NUMBER,
+ sale_date DATE
+);
 
-• SOLUTION: 
-• Steps for Oracle Database: 
-• In Terminal 
-• Step1: sudo service oracle-xe configure 
-• Step2: sudo service oracle-xe 
-start In Firefox 
-http://127.0.0.1:8080/apex/
+Step2 : retrieve tables
+select *from sales
 
-• Design and Implement a Sales 
-Management System with Stored 
-Procedures and Functions for Efficient 
-Data Handling
-
-1. Create Table Sales: 
-Querry: create table sales(sale_id number primary key,product_name 
-varchar2(100),quantity number,price number,sale_date date); 
-
-
-2. Create a stored procedure to add data to a table. 
-Querry: create or replace procedure add_sale(p_sale_id in 
-number,p_product_name in 
-varchar2,p_quantity in number,p_price in number,p_sale_date in date) as begin insert into 
-sales(sale_id,product_name,quantity,price,sale_date) 
-values(p_sale_id,p_product_name,p_quantity,p_price,p_sale_date); commit; 
-end; 
+Step3:Create Procedure
+CREATE OR REPLACE PROCEDURE add_sale (
+ p_sale_id IN NUMBER,
+ p_product_name IN VARCHAR2,
+ p_quantity IN NUMBER,
+ p_price IN NUMBER,
+ p_sale_date IN DATE
+)
+AS
+BEGIN
+ INSERT INTO sales (sale_id, product_name, quantity, price, sale_date)
+ VALUES (p_sale_id, p_product_name, p_quantity, p_price, p_sale_date);
+ COMMIT;
+END;
 /
 
+Step4:Insert Record
+BEGIN
+ add_sale(1, 'Laptop', 2, 50000, SYSDATE);
+ add_sale(2, 'Mouse', 5, 500, SYSDATE);
+END;
+/
 
-3.Insert Record: 
-Querry: begin add_sale(1,'Laptop',2,50000,SYSDATE); add_sale(2,'Mouse',5,500,SYSDATE); 
-end;  / 
+Step 5:Create Function
+CREATE OR REPLACE FUNCTION get_total_sales
+RETURN NUMBER
+AS
+ v_total NUMBER;
+BEGIN
+ SELECT SUM(quantity * price)
+ INTO v_total
+ FROM sales;
+RETURN NVL(v_total, 0);
+END;
+/
 
-4.Create function to calculate and return total sales. 
-Querry:  create or replace function 
-get_total_sales return number as v_total 
-number; begin select sum(quantity*price) 
-into v_total from sales; return  
-nvl(v_total,0); end;  /  
-
-5.Calling a function: 
-Querry: 
-declare total_sales number; begin 
-total_sales:=get_total_sales; 
-dbms_output.put_line('Total Sales Amount: '|| total_sales); 
-end; 
-/ 
-
-6.Sales Table using Procedure and Function 
-Querry: select * from sales;
-
-
-
-
-
-
-
-
+Step6: Call Function
+DECLARE
+ total_sales NUMBER;
+BEGIN
+ total_sales := get_total_sales;
+ DBMS_OUTPUT.PUT_LINE('Total Sales Amount: ' || total_sales);
+END;
+/
+select *from sales
 
 
 
